@@ -1,16 +1,24 @@
 const userInput = document.getElementById("userInput");
-let newCalculation = false;
+const operators = ["+", "-", "*", "/", "="];
 
 document.addEventListener("click", function (event) {
-  if (event.target.textContent === "=") {
+  const enteredChar = event.target.textContent;
+  if (enteredChar === "=") {
     userInput.value = eval(userInput.value);
-    newCalculation = true;
-  } else if (event.target.textContent === "AC") {
+  } else if (enteredChar === "AC") {
     userInput.value = "";
-  } else if (event.target.matches("button") && newCalculation) {
-    userInput.value = event.target.textContent;
-    newCalculation = false;
   } else if (event.target.matches("button")) {
-    userInput.value += event.target.textContent;
+    const lastEnteredChar = userInput.value.at(-1);
+    if (userInput.value == "" && operators.includes(enteredChar)) {
+      userInput.value = "";
+    } else if (
+      (operators.includes(lastEnteredChar) &&
+        operators.includes(enteredChar)) ||
+      (lastEnteredChar === "0" && enteredChar === "0")
+    ) {
+      userInput.value = userInput.value.slice(0, -1) + enteredChar;
+    } else {
+      userInput.value += enteredChar;
+    }
   }
 });
